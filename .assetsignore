@@ -2,4 +2,7 @@ worker.js
 wrangler.toml
 .github
 .git
+node_modules
 *.md
+*.log
+.assetsignore
