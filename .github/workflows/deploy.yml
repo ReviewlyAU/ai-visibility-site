@@ -11,8 +11,11 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
+      - name: Claims check (Brand Bible V7.1 and Proof Register)
+        run: python3 check_claims.py
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.158.0"

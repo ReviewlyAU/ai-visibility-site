@@ -20,6 +20,8 @@ jobs:
     name: Upload preview version
     steps:
       - uses: actions/checkout@v4
+      - name: Claims check (Brand Bible V7.1 and Proof Register)
+        run: python3 check_claims.py
       - name: Upload Worker version with preview alias
         uses: cloudflare/wrangler-action@v3
         with:
