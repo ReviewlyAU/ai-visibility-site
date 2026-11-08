@@ -7,7 +7,7 @@ Static HTML rebuild of **ai-visibility.com.au**, Reviewly's research site on how
 ## Status (8 Nov 2026)
 - **Live domain:** ai-visibility.com.au is **still served by the older Manus build**, not by this repo. Nothing here reaches visitors until the domain is attached to this Worker (Tanya's OK needed).
 - **This repo:** deploys to the Worker's own address, https://ai-visibility-com-au.tanya-fc9.workers.dev, on every push to `main`. Last deploy: 8 Jul 2026.
-- **Open pull request:** `brand-v7-1-and-switch-prep` retires 7 pages that overlap reviewly.com.au (301 redirects), brings wording into line with Brand Bible V7.1, and adds pull request previews.
+- **Open pull request:** `brand-v7-1-and-switch-prep` retires 7 pages that overlap reviewly.com.au (301 redirects), brings wording into line with Brand Bible V7.1, and adds pull request previews and the claims check. Preview checked on desktop and mobile (8 Nov). Not merged: the domain switch waits on Tanya's review, a Search Console baseline and a decision on the tracking pixel.
 
 ## How it fits with other systems
 - Supports **reviewly.com.au**: pages that overlapped Reviewly's own pages now redirect there, and kept pages link to the matching Reviewly page.
@@ -20,6 +20,7 @@ Static HTML rebuild of **ai-visibility.com.au**, Reviewly's research site on how
 - **Publish:** merging to `main` deploys to the Worker (workflow "Deploy to Cloudflare Workers"). The live domain only follows once it's attached to the Worker in Cloudflare.
 - Redirects live in `_redirects`. `*.md`, `.github` and `node_modules` aren't uploaded (see `.assetsignore`).
 - **Claims check:** `check_claims.py` runs before every deploy and every preview. It blocks banned claims (exclusivity, guarantees, results within days, Reviewly called software or an SEO agency), the ® mark, em dashes, retired names and any percentage figure. If it fails, nothing is uploaded. Run it by hand with `python check_claims.py`.
+- **Figures:** a figure is allowed only when its exact sentence and Proof Register ID are listed in `proof-register-figures.txt` (added by pull request after Tanya signs the entry off). Empty today.
 - Before publishing: wording checked against Brand Bible V7.1, and every number on a page has an approved Proof Register entry.
 
 ## Required settings (names only)
@@ -39,3 +40,4 @@ GitHub Actions secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 | 8 Jul 2026 | Static rebuild deployed to the Cloudflare Worker |
 | 1–2 Nov 2026 | Overlapping pages retired with 301s; unverified research claims removed (branch `fix/reviewly-overlap`) |
 | 8 Nov 2026 | Brand Bible V7.1 wording pass, figures without Proof Register entries removed, 404 page status fixed, pull request previews and claims check added |
+| 8 Nov 2026 | Claims check accepts figures listed with a Proof Register ID; `/blog/what-is-aeo` redirected to reviewly.com.au |
