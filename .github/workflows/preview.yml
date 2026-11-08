@@ -1,0 +1,42 @@
+name: Preview pull request
+
+# Uploads a new Worker version WITHOUT deploying it, so the live site and the
+# main workers.dev address don't change. Cloudflare gives the version its own
+# preview address: https://pr-<number>-ai-visibility-com-au.tanya-fc9.workers.dev
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    # Only for branches in this repo (forks don't get the Cloudflare secrets)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    name: Upload preview version
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload Worker version with preview alias
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --preview-alias pr-${{ github.event.pull_request.number }} --message "PR ${{ github.event.pull_request.number }} preview"
+      - name: Post the preview link on the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = `https://pr-${context.issue.number}-ai-visibility-com-au.tanya-fc9.workers.dev/`;
+            const marker = '<!-- preview-link -->';
+            const body = `${marker}\nPreview of this branch: ${url}\n\nThis is not the live site. Updated for commit ${context.sha.slice(0, 7)}.`;
+            const { data: comments } = await github.rest.issues.listComments({ ...context.repo, issue_number: context.issue.number });
+            const old = comments.find(c => c.body && c.body.includes(marker));
+            if (old) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: old.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+            }
