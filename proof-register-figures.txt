@@ -1,0 +1,9 @@
+# Figures allowed on ai-visibility.com.au (Brand Bible V7.1, R17)
+#
+# One line per sentence:  PR-000 | exact sentence as it appears on the page
+# Add a line only when the Proof Register entry is signed off by Tanya and its original
+# source is saved in the register. check_claims.py then lets the figure in that exact
+# sentence through; every other rule still applies. Change this file only in a
+# reviewed pull request.
+#
+# 8 Nov 2026: none of the site's figures has a signed-off entry yet, so this list is empty.

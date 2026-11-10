@@ -6,3 +6,5 @@ node_modules
 *.md
 *.log
 .assetsignore
+*.py
+proof-register-figures.txt
